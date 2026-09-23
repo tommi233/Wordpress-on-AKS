@@ -1,0 +1,7 @@
+apiVersion: egressgateway.kubernetes.azure.com/v1alpha1
+kind: StaticGatewayConfiguration
+metadata:
+  name: test-egressgateway
+  namespace: aks-static-egress-gateway
+spec:
+  gatewayNodepoolName: egressnp

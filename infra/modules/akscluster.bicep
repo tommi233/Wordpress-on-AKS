@@ -167,14 +167,6 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2025-02-01' 
     oidcIssuerProfile: {
       enabled: true
     }
-    ingressProfile: {
-      webAppRouting: {
-        enabled: true
-        nginx: {
-          defaultIngressControllerType: 'None'
-        }
-      }
-    }
     metricsProfile: {
       costAnalysis: {
         enabled: false

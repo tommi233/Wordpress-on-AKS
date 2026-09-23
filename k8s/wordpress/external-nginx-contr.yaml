@@ -1,0 +1,25 @@
+apiVersion: approuting.kubernetes.azure.com/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: nginx-public
+spec:
+  ingressClassName: nginx-public
+  controllerNamePrefix: nginx-public
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-public
+  namespace: httpbin
+spec:
+  ingressClassName: nginx-public
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
+        path: /test
+        pathType: Prefix

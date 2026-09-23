@@ -34,7 +34,7 @@ var sqlServerSKU string = 'Standard_B1ms'
 
 // AKS Cluster //
 var aksClusterName string = 'aks-${workloadName}-${locationAlias}'
-var kubernetesVersion string = '1.31.7'
+var kubernetesVersion string = '1.35.7'
 var agentPoolSize string = 'Standard_D4as_v5'
 var userPoolSize string = 'Standard_D4as_v5'
 var clusterAuthorizedIPRanges array = []

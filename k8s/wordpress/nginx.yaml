@@ -1,19 +1,37 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: wordpress
-  namespace: wordpress
+  name: store-nginx
+  namespace: storens
 spec:
   ingressClassName: nginx-internal
   rules:
-  - host: private.tombucaioni.com
+  - host:
     http:
       paths:
       - backend:
           service:
-            name: wordpress
+            name: store-front
             port:
               number: 80
         path: /
         pathType: Prefix
-       
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: store-nginx
+  namespace: httpbin
+spec:
+  ingressClassName: nginx-internal
+  rules:
+  - host:
+    http:
+      paths:
+      - backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
+        path: /headers
+        pathType: Prefix

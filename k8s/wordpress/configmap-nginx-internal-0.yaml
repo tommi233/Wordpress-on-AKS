@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  allow-cross-namespace-resources: "true"
+  allow-snippet-annotations: "true"
+  annotation-value-word-blocklist: load_module,lua_package,_by_lua,location,root,proxy_pass,serviceaccount,{,},'
+  annotations-risk-level: Critical
+  use-forwarded-headers: "true"
+  forwarded-for-header: "X-forwarded-for"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2026-02-03T10:57:39Z"
+  labels:
+    app.kubernetes.io/component: ingress-controller
+    app.kubernetes.io/managed-by: aks-app-routing-operator
+    app.kubernetes.io/name: nginx
+    kubernetes.azure.com/managedby: aks
+  name: nginx-internal-0
+  namespace: app-routing-system
+  ownerReferences:
+  - apiVersion: approuting.kubernetes.azure.com/v1alpha1
+    controller: true
+    kind: NginxIngressController
+    name: nginx-internal
+    uid: cc6fce60-a659-499c-bc8f-1aeb26189d29
+  resourceVersion: "533242"
+  uid: aee5c751-9837-47d8-a1d1-c7c568206e42

@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: caddy-test
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddyfile
+  namespace: caddy-test
+data:
+  Caddyfile: |
+    :8080 {
+      respond "Caddy behind AppGW -> NGINX -> AKS ✅\n" 200
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+  namespace: caddy-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: caddy
+  template:
+    metadata:
+      labels:
+        app: caddy
+    spec:
+      containers:
+        - name: caddy
+          image: caddy:2
+          ports:
+            - containerPort: 8080
+          args: ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          volumeMounts:
+            - name: caddyfile
+              mountPath: /etc/caddy/Caddyfile
+              subPath: Caddyfile
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: caddyfile
+          configMap:
+            name: caddyfile
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy
+  namespace: caddy-test
+spec:
+  selector:
+    app: caddy
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
